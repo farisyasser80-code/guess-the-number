@@ -3,7 +3,7 @@ from flask import Flask, request, session, render_template_string
 import random
 import os
 import threading
-import webview
+
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-key")
