@@ -160,10 +160,6 @@ min="1" max="100" required placeholder="Your guess">
 
 </div>
 
-<button id="musicBtn" onclick="toggleMusic()">
-    🎵 Music ON/OFF
-</button>
-
 <script>
 let audioCtx;
 let musicOn = false;
