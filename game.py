@@ -28,9 +28,10 @@ body {
     align-items: center;
     font-family: Arial, sans-serif;
     color: white;
-    background:
-    radial-gradient(circle at top, #263c65, transparent 55%),
-    linear-gradient(135deg, #080d1c, #101b35, #050812);
+   background:
+radial-gradient(circle at 20% 20%, #7c3aed55, transparent 40%),
+radial-gradient(circle at 80% 80%, #06b6d455, transparent 40%),
+linear-gradient(135deg, #050816, #111827, #090b20);
 }
 
 .game {
@@ -93,10 +94,48 @@ button:hover {
     font-size: 12px;
     color: #71819c;
 }
+.number-rain {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-number {
+    position: absolute;
+    bottom: -50px;
+    color: #38bdf8;
+    font-size: 22px;
+    font-weight: bold;
+    opacity: 0.35;
+    text-shadow: 0 0 12px #06b6d4;
+    animation: numberFloat linear infinite;
+}
+
+@keyframes numberFloat {
+    from { transform: translateY(0); opacity: 0; }
+    20% { opacity: 0.5; }
+    to { transform: translateY(-110vh); opacity: 0; }
+}
+
+.game {
+    position: relative;
+    z-index: 2;
+}
 </style>
 </head>
 
 <body>
+<div class="number-bg">
+    <span class="floating-number">01</span>
+    <span class="floating-number">42</span>
+    <span class="floating-number">87</span>
+    <span class="floating-number">13</span>
+    <span class="floating-number">99</span>
+    <span class="floating-number">56</span>
+    <span class="floating-number">24</span>
+</div>
 <div class="game">
 
 <h1>GUESS THE NUMBER</h1>
@@ -120,7 +159,63 @@ min="1" max="100" required placeholder="Your guess">
 <div class="footer">GUESS GAME • GOOD LUCK</div>
 
 </div>
-</body>
+
+<button id="musicBtn" onclick="toggleMusic()">
+    🎵 Music ON/OFF
+</button>
+
+<script>
+let audioCtx;
+let musicOn = false;
+let musicTimer;
+
+function startMusic() {
+    if (musicOn) return;
+
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    musicOn = true;
+
+    const notes = [261.63, 329.63, 392, 329.63, 293.66, 349.23, 440, 392];
+    let i = 0;
+
+    function playNote() {
+        if (!musicOn) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.value = notes[i % notes.length];
+
+        gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.4);
+
+        i++;
+    }
+
+    playNote();
+    musicTimer = setInterval(playNote, 500);
+}
+
+function toggleMusic() {
+    if (!musicOn) {
+        startMusic();
+    } else {
+        musicOn = false;
+        clearInterval(musicTimer);
+    }
+}
+
+document.addEventListener("click", function() {
+    if (!musicOn) startMusic();
+}, { once: true });
+</script></body>
 </html>
 """
 
