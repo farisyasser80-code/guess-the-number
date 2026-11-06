@@ -219,7 +219,38 @@ function toggleMusic() {
 document.addEventListener("click", function() {
     if (!musicOn) startMusic();
 }, { once: true });
-</script></body>
+const resultMessage = {{ message|tojson }};
+
+function playEffect(frequencies) {
+    if (!audioCtx) return;
+
+    frequencies.forEach((freq, index) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const start = audioCtx.currentTime + index * 0.15;
+        gain.gain.setValueAtTime(0.12, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.2);
+
+        osc.start(start);
+        osc.stop(start + 0.2);
+    });
+}
+
+document.addEventListener("click", function() {
+    if (resultMessage.includes("Correct")) {
+        playEffect([523, 659, 784, 1046]);
+    } else if (
+        resultMessage.includes("Too Low") ||
+        resultMessage.includes("Too High")
+    ) {
+        playEffect([220, 180]);
+    }
+}, { once: true });</script></body>
 </html>
 """
 
