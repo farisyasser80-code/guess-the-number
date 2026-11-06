@@ -191,7 +191,7 @@ function startMusic() {
         osc.type = "sine";
         osc.frequency.value = notes[i % notes.length];
 
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.setValueAtTime(3, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
 
         osc.connect(gain);
