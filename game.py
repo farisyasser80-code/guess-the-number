@@ -101,17 +101,25 @@ button:hover {
     pointer-events: none;
     z-index: 0;
 }
-
 .floating-number {
     position: absolute;
     bottom: -50px;
     color: #38bdf8;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: bold;
-    opacity: 0.35;
+    opacity: 0.65;
     text-shadow: 0 0 12px #06b6d4;
-    animation: numberFloat linear infinite;
+    animation: numberFloat 12s linear infinite;
 }
+
+.floating-number:nth-child(1) { left: 5%; animation-delay: 0s; }
+.floating-number:nth-child(2) { left: 20%; animation-delay: 2s; }
+.floating-number:nth-child(3) { left: 35%; animation-delay: 4s; }
+.floating-number:nth-child(4) { left: 50%; animation-delay: 1s; }
+.floating-number:nth-child(5) { left: 65%; animation-delay: 3s; }
+.floating-number:nth-child(6) { left: 80%; animation-delay: 5s; }
+.floating-number:nth-child(7) { left: 95%; animation-delay: 2s; }
+
 
 @keyframes numberFloat {
     from { transform: translateY(0); opacity: 0; }
